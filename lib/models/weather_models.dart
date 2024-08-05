@@ -37,10 +37,10 @@ class CurrentWeather {
 }
 
 class Forecast {
-  final int? temp;
-  final String? iconCode;
-  final String? weatherDescription;
-  final String? timeStamp;
+  final int temp;
+  final String iconCode;
+  final String weatherDescription;
+  final String timeStamp;
 
   Forecast({
     required this.temp,
@@ -51,9 +51,9 @@ class Forecast {
 
   factory Forecast.fromJson(Map<String, dynamic> json) {
     return Forecast(
-      temp: json["main"]?["temp"]?.round(),
-      iconCode: json["weather"]?[0]?["icon"],
-      weatherDescription: json["weather"]?[0]?["description"],
+      temp: json["main"]["temp"].round(),
+      iconCode: json["weather"][0]["icon"],
+      weatherDescription: json["weather"][0]["description"],
       timeStamp: json["dt_txt"],
     );
   }
