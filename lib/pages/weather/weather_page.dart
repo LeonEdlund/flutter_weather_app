@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:weather_app_u3/models/weather_models.dart';
 import 'package:weather_app_u3/pages/weather/current.dart';
 import 'package:weather_app_u3/pages/weather/forecast.dart';
 import 'package:weather_app_u3/services/set_background.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:weather_app_u3/services/get_weather.dart';
 import 'package:weather_app_u3/services/get_user_location.dart';
 
@@ -50,13 +51,22 @@ class _WeatherPageState extends State<WeatherPage> {
 
   Future _getWeatherData() async {
     try {
+      // check internat connection
+      final List<ConnectivityResult> connectivityResult =
+          await (Connectivity().checkConnectivity());
+      if (connectivityResult.contains(ConnectivityResult.none)) {
+        throw Exception("no internet access...");
+      }
       // Get users position
       Position position = await getUserLocation();
 
       // Get weather data
-      CurrentWeather currentWeatherData =
-          await GetWeather().getCurrentWeather(position);
-      List forecastData = await GetWeather().getForecast(position);
+      List weatherResults = await Future.wait([
+        GetWeather().getCurrentWeather(position),
+        GetWeather().getForecast(position),
+      ]);
+      CurrentWeather currentWeatherData = weatherResults[0];
+      List forecastData = weatherResults[1];
 
       // Set app background based on weather
       Background backgroundColor =

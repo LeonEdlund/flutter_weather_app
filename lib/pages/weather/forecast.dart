@@ -12,22 +12,25 @@ class ForecastPage extends StatelessWidget {
         child: Text("No forecast available!"),
       );
     }
-    return ListView.separated(
+    return ListView.builder(
       itemCount: forecasts!.length,
-      separatorBuilder: (context, index) => const Divider(),
       itemBuilder: (BuildContext context, int index) {
         var forecast = forecasts![index];
-        return ListTile(
-          leading: Image(
-            image: NetworkImage(
-              "https://openweathermap.org/img/wn/${forecast.iconCode.toString()}@2x.png",
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+          color: const Color.fromARGB(44, 158, 158, 158),
+          child: ListTile(
+            leading: Image(
+              image: NetworkImage(
+                "https://openweathermap.org/img/wn/${forecast.iconCode.toString()}@2x.png",
+              ),
             ),
-          ),
-          title: Text(forecast.timeStamp),
-          subtitle: Text(forecast.weatherDescription),
-          trailing: Text(
-            "${forecast.temp.toString()}°",
-            style: const TextStyle(fontSize: 28),
+            title: Text(forecast.timeStamp),
+            subtitle: Text(forecast.weatherDescription),
+            trailing: Text(
+              "${forecast.temp.toString()}°",
+              style: const TextStyle(fontSize: 28),
+            ),
           ),
         );
       },
