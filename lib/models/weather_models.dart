@@ -40,12 +40,14 @@ class Forecast {
   final int temp;
   final String iconCode;
   final String weatherDescription;
+  final int unconvertedTime;
   final String timeStamp;
 
   Forecast({
     required this.temp,
     required this.iconCode,
     required this.weatherDescription,
+    required this.unconvertedTime,
     required this.timeStamp,
   });
 
@@ -54,6 +56,7 @@ class Forecast {
       temp: json["main"]["temp"].round(),
       iconCode: json["weather"][0]["icon"],
       weatherDescription: json["weather"][0]["description"],
+      unconvertedTime: json["dt"],
       timeStamp: json["dt_txt"],
     );
   }
