@@ -1,3 +1,5 @@
+import 'package:weather_app_u3/utils/format_timestamps.dart';
+
 class CurrentWeather {
   final String name;
   final String country;
@@ -6,8 +8,9 @@ class CurrentWeather {
   final int? clouds;
   final String iconCode;
   final int weatherCode;
+  final int sunset;
   final String weatherDescription;
-  final int timeStamp;
+  final String date;
 
   CurrentWeather({
     required this.name,
@@ -17,8 +20,9 @@ class CurrentWeather {
     required this.clouds,
     required this.iconCode,
     required this.weatherCode,
+    required this.sunset,
     required this.weatherDescription,
-    required this.timeStamp,
+    required this.date,
   });
 
   factory CurrentWeather.fromJson(Map<String, dynamic> json) {
@@ -30,8 +34,9 @@ class CurrentWeather {
       clouds: json["clouds"]?["all"]?.toInt(),
       iconCode: json["weather"][0]["icon"],
       weatherCode: json["weather"][0]["id"],
+      sunset: json["sys"]["sunset"],
       weatherDescription: json["weather"][0]["description"],
-      timeStamp: json["dt"],
+      date: formatCurrentWeatherDate(json["dt"]),
     );
   }
 }
@@ -40,24 +45,22 @@ class Forecast {
   final int temp;
   final String iconCode;
   final String weatherDescription;
-  final int unconvertedTime;
-  final String timeStamp;
+  final String day;
+  final String hour;
 
-  Forecast({
-    required this.temp,
-    required this.iconCode,
-    required this.weatherDescription,
-    required this.unconvertedTime,
-    required this.timeStamp,
-  });
+  Forecast(
+      {required this.temp,
+      required this.iconCode,
+      required this.weatherDescription,
+      required this.day,
+      required this.hour});
 
   factory Forecast.fromJson(Map<String, dynamic> json) {
     return Forecast(
-      temp: json["main"]["temp"].round(),
-      iconCode: json["weather"][0]["icon"],
-      weatherDescription: json["weather"][0]["description"],
-      unconvertedTime: json["dt"],
-      timeStamp: json["dt_txt"],
-    );
+        temp: json["main"]["temp"].round(),
+        iconCode: json["weather"][0]["icon"],
+        weatherDescription: json["weather"][0]["description"],
+        day: formatForecastDate(json["dt"]),
+        hour: formatUnixToHour(json["dt"]));
   }
 }

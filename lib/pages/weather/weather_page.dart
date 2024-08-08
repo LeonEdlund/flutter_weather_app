@@ -70,7 +70,7 @@ class _WeatherPageState extends State<WeatherPage> {
 
       // Set app background based on weather
       Background backgroundColor =
-          setBackground(currentWeatherData.weatherCode);
+          setBackground(currentWeatherData.weatherCode, currentWeatherData.sunset);
 
       setState(() {
         somethingFailed = false;

@@ -37,8 +37,6 @@ class CurrentWeatherPage extends StatelessWidget {
   }
 
   Widget _mainWeatherInfo() {
-    String date = _convertTimeStamp(weatherData!.timeStamp);
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -50,7 +48,7 @@ class CurrentWeatherPage extends StatelessWidget {
           weatherData!.weatherDescription,
           style: const TextStyle(fontSize: 24),
         ),
-        Text(date)
+        Text(weatherData!.date)
       ],
     );
   }
@@ -85,10 +83,5 @@ class CurrentWeatherPage extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  String _convertTimeStamp(int time) {
-    DateTime date = DateTime.fromMillisecondsSinceEpoch(time * 1000);
-    return DateFormat.MMMMEEEEd().format(date);
   }
 }

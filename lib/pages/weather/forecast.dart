@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app_u3/utils/format_timestamps.dart';
 
 class ForecastPage extends StatelessWidget {
   final List? forecasts;
@@ -14,28 +13,68 @@ class ForecastPage extends StatelessWidget {
       );
     }
 
+    // return ListView.builder(
+    //   itemCount: forecasts!.length,
+    //   itemBuilder: (BuildContext context, int index) {
+    //     var forecast = forecasts![index];
+    //     return Card(
+    //       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+    //       color: const Color.fromARGB(44, 158, 158, 158),
+    //       child: ListTile(
+    //         leading: Image(
+    //           image: NetworkImage(
+    //             "https://openweathermap.org/img/wn/${forecast.iconCode.toString()}@2x.png",
+    //           ),
+    //         ),
+    //         title: Text(
+    //           "${forecast.day}, ${forecast.hour}",
+    //         ),
+    //         subtitle: Text(forecast.weatherDescription),
+    //         trailing: Text(
+    //           "${forecast.temp.toString()}°",
+    //           style: const TextStyle(fontSize: 28),
+    //         ),
+    //       ),
+    //     );
+    //   },
+    // );
+
     return ListView.builder(
       itemCount: forecasts!.length,
       itemBuilder: (BuildContext context, int index) {
         var forecast = forecasts![index];
-        return Card(
-          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-          color: const Color.fromARGB(44, 158, 158, 158),
-          child: ListTile(
-            leading: Image(
-              image: NetworkImage(
-                "https://openweathermap.org/img/wn/${forecast.iconCode.toString()}@2x.png",
-              ),
+        return Column(
+          children: [
+            const Text("hej"),
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: forecasts!.length,
+              itemBuilder: (BuildContext context, int index) {
+                var forecast = forecasts![index];
+                return Card(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                  color: const Color.fromARGB(44, 158, 158, 158),
+                  child: ListTile(
+                    leading: Image(
+                      image: NetworkImage(
+                        "https://openweathermap.org/img/wn/${forecast.iconCode.toString()}@2x.png",
+                      ),
+                    ),
+                    title: Text(
+                      "${forecast.day}, ${forecast.hour}",
+                    ),
+                    subtitle: Text(forecast.weatherDescription),
+                    trailing: Text(
+                      "${forecast.temp.toString()}°",
+                      style: const TextStyle(fontSize: 28),
+                    ),
+                  ),
+                );
+              },
             ),
-            title: Text(
-              formatForecastDate(forecast.unconvertedTime, forecast.timeStamp),
-            ),
-            subtitle: Text(forecast.weatherDescription),
-            trailing: Text(
-              "${forecast.temp.toString()}°",
-              style: const TextStyle(fontSize: 28),
-            ),
-          ),
+          ],
         );
       },
     );
