@@ -1,5 +1,2 @@
-1. fix what happens when user deny location
-2. internet error
-3. drag to update forecast
-4. Update about page
-5. Go over code, clean, and rename
+
+3. handle all errors with try, catch blocks
