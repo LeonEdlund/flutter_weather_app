@@ -8,7 +8,8 @@ class CurrentWeather {
   final int? clouds;
   final String iconCode;
   final int weatherCode;
-  final int sunset;
+  final double sunset;
+  final double sunrise;
   final String weatherDescription;
   final String date;
 
@@ -21,6 +22,7 @@ class CurrentWeather {
     required this.iconCode,
     required this.weatherCode,
     required this.sunset,
+    required this.sunrise,
     required this.weatherDescription,
     required this.date,
   });
@@ -34,7 +36,8 @@ class CurrentWeather {
       clouds: json["clouds"]?["all"]?.toInt(),
       iconCode: json["weather"][0]["icon"],
       weatherCode: json["weather"][0]["id"],
-      sunset: json["sys"]["sunset"],
+      sunset: formatUnixToDouble(json["sys"]["sunset"]),
+      sunrise: formatUnixToDouble(json["sys"]["sunrise"]),
       weatherDescription: json["weather"][0]["description"],
       date: formatCurrentWeatherDate(json["dt"]),
     );

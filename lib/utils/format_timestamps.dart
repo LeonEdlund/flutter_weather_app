@@ -18,9 +18,9 @@ String formatForecastDate(int dateToConvert) {
   }
 }
 
-int formatSunsetTime(int sunsetUnix) {
+double formatUnixToDouble(int sunsetUnix) {
   DateTime time = DateTime.fromMillisecondsSinceEpoch(sunsetUnix * 1000);
-  return time.hour;
+  return time.hour + (time.minute / 60);
 }
 
 String formatCurrentWeatherDate(int time) {
