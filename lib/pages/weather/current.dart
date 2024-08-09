@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app_u3/models/weather_models.dart';
 import 'package:fluttericon/meteocons_icons.dart';
-import 'package:intl/intl.dart';
 
 class CurrentWeatherPage extends StatelessWidget {
   final CurrentWeather? weatherData;
@@ -30,9 +29,7 @@ class CurrentWeatherPage extends StatelessWidget {
   Widget _weatherIcon() {
     return Image(
       image: NetworkImage(
-        "https://openweathermap.org/img/wn/${weatherData!.iconCode}@4x.png",
-        scale: 0.8,
-      ),
+          "https://openweathermap.org/img/wn/${weatherData!.iconCode}@4x.png"),
     );
   }
 
