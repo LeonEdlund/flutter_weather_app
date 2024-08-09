@@ -26,7 +26,7 @@ class GetWeather {
     }
   }
 
-  Future<List<Forecast>> getForecast(Position location) async {
+  Future<Map<String, List<Forecast>>> getForecast(Position location) async {
     final response = await http.get(
       Uri.https(
         "api.openweathermap.org",
@@ -42,11 +42,23 @@ class GetWeather {
 
     if (response.statusCode == 200) {
       List<Forecast> forecasts = [];
+      Map<String, List<Forecast>> groupedForecasts = {};
+
+      // create list of all forecasts
       var jsonData = jsonDecode(response.body);
       for (var eachForecast in jsonData["list"]) {
         forecasts.add(Forecast.fromJson(eachForecast));
       }
-      return forecasts;
+
+      // group forecasts based on day
+      for (var forecast in forecasts) {
+        String day = forecast.day;
+        if (!groupedForecasts.containsKey(forecast.day)) {
+          groupedForecasts[day] = [];
+        }
+        groupedForecasts[day]!.add(forecast);
+      }
+      return groupedForecasts;
     } else {
       throw Exception("error getting weather information...");
     }

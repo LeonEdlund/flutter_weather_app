@@ -18,7 +18,7 @@ class WeatherPage extends StatefulWidget {
 
 class _WeatherPageState extends State<WeatherPage> {
   CurrentWeather? currentWeather;
-  List? forecast;
+  Map? forecast;
   Background? backgroundColors;
   bool isLoading = true;
   bool somethingFailed = false;
@@ -66,11 +66,14 @@ class _WeatherPageState extends State<WeatherPage> {
         GetWeather().getForecast(position),
       ]);
       CurrentWeather currentWeatherData = weatherResults[0];
-      List forecastData = weatherResults[1];
+      Map forecastData = weatherResults[1];
 
       // Set app background based on weather
-      Background backgroundColor =
-          setBackground(currentWeatherData.weatherCode, currentWeatherData.sunset);
+      Background backgroundColor = setBackground(
+        currentWeatherData.weatherCode,
+        currentWeatherData.sunset,
+        currentWeatherData.sunrise,
+      );
 
       setState(() {
         somethingFailed = false;
