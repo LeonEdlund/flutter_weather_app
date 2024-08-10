@@ -26,7 +26,6 @@ class GetWeather {
         throw Exception("error getting weather information...");
       }
     } catch (e) {
-      print(e);
       throw Exception("error getting weather information...");
     }
   }
