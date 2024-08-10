@@ -57,6 +57,7 @@ class _WeatherPageState extends State<WeatherPage> {
       if (connectivityResult.contains(ConnectivityResult.none)) {
         throw Exception("no internet access...");
       }
+
       // Get users position
       Position position = await getUserLocation();
 
