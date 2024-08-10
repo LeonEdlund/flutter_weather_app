@@ -63,7 +63,7 @@ class CurrentWeatherPage extends StatelessWidget {
               Meteocons.wind,
               size: 50,
             ),
-            Text(windSpeed != null ? "$windSpeed Km/h" : "-"),
+            Text(windSpeed != null ? "$windSpeed m/s" : "-"),
             const Text("Wind"),
           ],
         ),
