@@ -22,39 +22,43 @@ class ForecastPage extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
-              child: Text(
-                day,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            ...dayForecasts.map(
-              (forecast) => Card(
-                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                color: const Color.fromARGB(44, 158, 158, 158),
-                child: ListTile(
-                  leading: Image(
-                    image: NetworkImage(
-                      "https://openweathermap.org/img/wn/${forecast.iconCode.toString()}@2x.png",
-                    ),
-                  ),
-                  title: Text(
-                    forecast.weatherDescription,
-                  ),
-                  subtitle: Text(forecast.hour),
-                  trailing: Text(
-                    "${forecast.temp.toString()}°",
-                    style: const TextStyle(fontSize: 28),
-                  ),
-                ),
-              ),
-            ),
+            dayOfForecast(day),
+            ...dayForecasts.map((forecast) => forecastCard(forecast)),
           ],
         );
       },
+    );
+  }
+
+  Widget dayOfForecast(String day) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
+      child: Text(
+        day,
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget forecastCard(var forecast) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+      color: const Color.fromARGB(44, 158, 158, 158),
+      child: ListTile(
+        leading: Image(
+          image: NetworkImage(
+            "https://openweathermap.org/img/wn/${forecast.iconCode.toString()}@2x.png",
+          ),
+        ),
+        title: Text(
+          forecast.weatherDescription,
+        ),
+        subtitle: Text(forecast.hour),
+        trailing: Text(
+          "${forecast.temp.toString()}°",
+          style: const TextStyle(fontSize: 28),
+        ),
+      ),
     );
   }
 }

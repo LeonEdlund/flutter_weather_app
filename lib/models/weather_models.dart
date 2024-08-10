@@ -51,19 +51,21 @@ class Forecast {
   final String day;
   final String hour;
 
-  Forecast(
-      {required this.temp,
-      required this.iconCode,
-      required this.weatherDescription,
-      required this.day,
-      required this.hour});
+  Forecast({
+    required this.temp,
+    required this.iconCode,
+    required this.weatherDescription,
+    required this.day,
+    required this.hour,
+  });
 
   factory Forecast.fromJson(Map<String, dynamic> json) {
     return Forecast(
-        temp: json["main"]["temp"].round(),
-        iconCode: json["weather"][0]["icon"],
-        weatherDescription: json["weather"][0]["description"],
-        day: formatForecastDate(json["dt"]),
-        hour: formatUnixToHour(json["dt"]));
+      temp: json["main"]["temp"].round(),
+      iconCode: json["weather"][0]["icon"],
+      weatherDescription: json["weather"][0]["description"],
+      day: formatForecastDate(json["dt"]),
+      hour: formatUnixToHour(json["dt"]),
+    );
   }
 }
