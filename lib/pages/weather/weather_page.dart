@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:weather_app_u3/models/weather_models.dart';
 import 'package:weather_app_u3/pages/weather/current.dart';
 import 'package:weather_app_u3/pages/weather/forecast.dart';
@@ -17,14 +18,16 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
+  // Weather data
   CurrentWeather? currentWeather;
   Map? forecast;
-  Background? backgroundColors;
+
+  // useful variables
   bool isLoading = true;
   bool somethingFailed = false;
   String? errorMessage;
 
-  // for page view dots
+  // used for page view dots
   late int selectedPage;
   late final PageController _pageController;
 
@@ -51,7 +54,7 @@ class _WeatherPageState extends State<WeatherPage> {
 
   Future _getWeatherData() async {
     try {
-      // check internat connection
+      // check internet connection
       final List<ConnectivityResult> connectivityResult =
           await (Connectivity().checkConnectivity());
       if (connectivityResult.contains(ConnectivityResult.none)) {
@@ -66,26 +69,17 @@ class _WeatherPageState extends State<WeatherPage> {
         GetWeather().getCurrentWeather(position),
         GetWeather().getForecast(position),
       ]);
-      CurrentWeather currentWeatherData = weatherResults[0];
-      Map forecastData = weatherResults[1];
-
-      // Set app background based on weather
-      Background backgroundColor = setBackground(
-        currentWeatherData.weatherCode,
-        currentWeatherData.sunset,
-        currentWeatherData.sunrise,
-      );
 
       setState(() {
         somethingFailed = false;
         selectedPage = 0;
-        currentWeather = currentWeatherData;
-        forecast = forecastData;
-        backgroundColors = backgroundColor;
+        currentWeather = weatherResults[0];
+        forecast = weatherResults[1];
         isLoading = false;
       });
     } catch (e) {
       setState(() {
+        currentWeather = null;
         errorMessage = e.toString().replaceAll("Exception: ", "");
         somethingFailed = true;
         isLoading = false;
@@ -105,24 +99,7 @@ class _WeatherPageState extends State<WeatherPage> {
             )
           : SafeArea(
               child: somethingFailed
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            errorMessage ?? "something failed...",
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                          IconButton(
-                            onPressed: _reloadPage,
-                            icon: const Icon(
-                              Icons.refresh,
-                              size: 42,
-                            ),
-                          )
-                        ],
-                      ),
-                    )
+                  ? _errorPopUp()
                   : Column(
                       children: [
                         _currentLocation(),
@@ -151,13 +128,19 @@ class _WeatherPageState extends State<WeatherPage> {
   }
 
   BoxDecoration _backgroundGradient() {
+    Background backgroundColors = setBackground(
+      currentWeather?.weatherCode,
+      currentWeather?.sunset,
+      currentWeather?.sunrise,
+    );
+
     return BoxDecoration(
       gradient: LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          backgroundColors?.topColor ?? Colors.black,
-          backgroundColors?.bottomColor ?? Colors.black
+          backgroundColors.topColor,
+          backgroundColors.bottomColor,
         ],
       ),
     );
@@ -184,6 +167,29 @@ class _WeatherPageState extends State<WeatherPage> {
           icon: const Icon(Icons.refresh),
         )
       ],
+    );
+  }
+
+  Widget _errorPopUp() {
+    bool locationError = errorMessage == "Location permission is disabled...";
+
+    return AlertDialog(
+      icon: const Icon(Icons.error),
+      content: Text(
+        errorMessage ?? "something went wrong",
+        textAlign: TextAlign.center,
+      ),
+      contentTextStyle: const TextStyle(fontSize: 15),
+      actions: [
+        TextButton(onPressed: _reloadPage, child: const Text("Try Again")),
+        locationError
+            ? const TextButton(
+                onPressed: openAppSettings,
+                child: Text("Open settings"),
+              )
+            : const SizedBox()
+      ],
+      actionsAlignment: MainAxisAlignment.center,
     );
   }
 }

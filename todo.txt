@@ -1,2 +1,0 @@
-
-3. handle all errors with try, catch blocks

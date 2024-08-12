@@ -56,12 +56,12 @@ class GetWeather {
         }
 
         // group forecasts based on day
-        for (var forecast in forecasts) {
-          String day = forecast.day;
-          if (!groupedForecasts.containsKey(forecast.day)) {
+        for (var eachForecast in forecasts) {
+          String day = eachForecast.day;
+          if (!groupedForecasts.containsKey(eachForecast.day)) {
             groupedForecasts[day] = [];
           }
-          groupedForecasts[day]!.add(forecast);
+          groupedForecasts[day]!.add(eachForecast);
         }
         return groupedForecasts;
       } else {
