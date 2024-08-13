@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:string_capitalize/string_capitalize.dart';
 
 class ForecastPage extends StatelessWidget {
   final Map? forecasts;
@@ -51,7 +52,7 @@ class ForecastPage extends StatelessWidget {
           ),
         ),
         title: Text(
-          forecast.weatherDescription,
+          forecast.weatherDescription.toString().capitalizeEach(),
         ),
         subtitle: Text(forecast.hour),
         trailing: Text(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app_u3/models/weather_models.dart';
 import 'package:fluttericon/meteocons_icons.dart';
+import 'package:string_capitalize/string_capitalize.dart';
 
 class CurrentWeatherPage extends StatelessWidget {
   final CurrentWeather? weatherData;
@@ -42,7 +43,7 @@ class CurrentWeatherPage extends StatelessWidget {
           style: const TextStyle(fontSize: 80, fontWeight: FontWeight.bold),
         ),
         Text(
-          weatherData!.weatherDescription,
+          weatherData!.weatherDescription.capitalizeEach(),
           style: const TextStyle(fontSize: 24),
         ),
         Text(weatherData!.date)
